@@ -53,25 +53,23 @@ class Particle(object):
         # 粒子の位置を更新する
         self.__my_position += self.__my_velocity
         # 範囲外に出た粒子は範囲内に収める
-        """
+
         if (self.__maxs is not None):
             max_out_of_range_index = self.__my_position > self.__maxs
             self.__my_position[max_out_of_range_index] = self.__maxs[max_out_of_range_index]
         if (self.__mins is not None):
             min_out_of_range_index = self.__my_position < self.__mins
             self.__my_position[min_out_of_range_index] = self.__mins[min_out_of_range_index]
-        """
 
+        """
         if (self.__rs is not None):
-            if abs(self.__my_position) > self.__rs:
                 r_out_of_range_index = self.__my_position
             segment2 = position_i
             segment1 = position_i - self.__my_velocity
             center = (0,0) ; radius = 1
             self.__close_rs = CrossPoint(center, radius, segment1, segment2)
             self.__my_position[r_out_of_range_index] = self.__close_rs[r_out_of_range_index]
-
-
+        """
         # 評価値を計算する
         score = self.__f(self.__my_position)
         # 最良解を更新する
@@ -131,9 +129,9 @@ if __name__ == '__main__':
     # 最適化する関数を入力し、極座標で戻す
     def f(x): return x[0]**2+x[1]**2
     # 変数が取り得る最大値
-    #maxs = np.array([1, 1])
+    maxs = np.array([1, 1])
     # 変数が取り得る最小値
-    #mins = np.array([-1, -1])
+    mins = np.array([-1, -1])
     # 変数が取り得る最大半径
     rs = 3
     # ばらまく粒子の個数
