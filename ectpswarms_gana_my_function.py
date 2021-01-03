@@ -6,6 +6,8 @@ import random
 from IPython.display import HTML
 from matplotlib.animation import PillowWriter
 from PIL import Image, ImageDraw
+import xlrd
+import pandas as pd
 
 # 目的関数
 # def objective_function(position):
@@ -13,15 +15,34 @@ from PIL import Image, ImageDraw
 fig = plt.figure()
 ims = []
 
+# ファイルから各要素を読み込み
+s = []
+R = []
+L = []
+
+list_s = pd.read_excel('poyo.xlsx', sheet_name=0)
+s.append(list_s)
+
+list_r = pd.read_excel('poyo.xlsx', sheet_name=1)
+R.append(list_r)
+
+list_l = pd.read_excel('poyo.xlsx', sheet_name=2)
+L.append(list_l)
+
+
+
 def objective_function(position):
+    # MY FUNCTION
+    t1 = np.sum(map((s - (position * [R, L])) ** 2))
+    return t1
 
-
+    """
     # RASTRIGIN FUNCTION
     t1 = 10 * len(position)
     t2 = np.sum(position ** 2)
     t3 = -10 * np.sum(np.cos(2 * np.pi * position))
     return t1 + t2 + t3
-    """
+
     # ACKLEY FUNCTION
     t1 = 20
     t2 = -20 * np.exp(-0.2 * np.sqrt(1.0 / len(position) * np.sum(position ** 2, axis=0)))

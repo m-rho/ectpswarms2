@@ -73,7 +73,7 @@ def init_plot(xy_min, xy_max):
 def play_plot(axes, mesh_XYZ, positions, personal_best_positions, personal_best_scores, global_best_particle_position, velocities):
     #cm = plt.get_cmap("cool")
     im1 = axes.plot_surface(mesh_XYZ['X'], mesh_XYZ['Y'], mesh_XYZ['Z'], alpha=0.3, cmap='viridis')
-    #im2 = axes.scatter(positions[:,0], positions[:,1], np.apply_along_axis(objective_function, 1, positions), c="crimson", linewidth=1, label="position")
+    im2 = axes.scatter(positions[:,0], positions[:,1], np.apply_along_axis(objective_function, 1, positions), c="crimson", linewidth=1, label="position")
     im3 = axes.scatter(personal_best_positions[:,0], personal_best_positions[:,1], personal_best_scores, linewidth=1, c='darkslateblue', label="personal_best_positions")
     im4 = axes.scatter(global_best_particle_position[0], global_best_particle_position[1], objective_function(global_best_particle_position), linewidth=3, marker='o', c='black', label="global_best_particle_position")
 
@@ -136,8 +136,6 @@ def main():
     # グローバルベスト位置
     global_best_particle_position = personal_best_positions[global_best_particle_id]
 
-    im1 = axes.plot_surface(mesh_XYZ['X'], mesh_XYZ['Y'], mesh_XYZ['Z'], alpha=0.3, cmap='viridis')
-
     # 規定回数
     for T in range(limit_times):
 
@@ -158,17 +156,17 @@ def main():
         global_best_particle_id = np.argmin(personal_best_scores)
         global_best_particle_position = personal_best_positions[global_best_particle_id]
 
-        #im1 = axes.plot_surface(mesh_XYZ['X'], mesh_XYZ['Y'], mesh_XYZ['Z'], alpha=0.3, cmap='viridis')
-        im2 = axes.scatter(positions[:,0], positions[:,1], np.apply_along_axis(objective_function, 1, positions), c="black", s=5, label="position")
-        #im3 = axes.scatter(personal_best_positions[:,0], personal_best_positions[:,1], personal_best_scores, linewidth=1, c='crimson', label="personal_best_positions")
-        im4 = axes.scatter(global_best_particle_position[0], global_best_particle_position[1], objective_function(global_best_particle_position), linewidth=5, marker='^', c='black', label="global_best_particle_position")
+        im1 = axes.plot_surface(mesh_XYZ['X'], mesh_XYZ['Y'], mesh_XYZ['Z'], alpha=0.3, cmap='viridis')
+        im2 = axes.scatter(positions[:,0], positions[:,1], np.apply_along_axis(objective_function, 1, positions), c="crimson", linewidth=1, label="position")
+        im3 = axes.scatter(personal_best_positions[:,0], personal_best_positions[:,1], personal_best_scores, linewidth=1, c='darkslateblue', label="personal_best_positions")
+        im4 = axes.scatter(global_best_particle_position[0], global_best_particle_position[1], objective_function(global_best_particle_position), linewidth=3, marker='o', c='black', label="global_best_particle_position")
 
-        #im5 = axes.quiver(positions[:,0], positions[:,1], np.apply_along_axis(objective_function, 1, positions), velocities[:,0], velocities[:,1],np.zeros(len(velocities)), color='gray', label="velocity")
+        im5 = axes.quiver(positions[:,0], positions[:,1], np.apply_along_axis(objective_function, 1, positions), velocities[:,0], velocities[:,1],np.zeros(len(velocities)), color='gray', label="velocity")
 
         #ims.append([im1,im2,im3,im4,im5])
 
         plt.draw()
-        ims.append([im2,im4])
+        ims.append([im1])
         #ims.append([im1])
         #plt.pause(0.1)
         #plt.cla()
@@ -176,9 +174,9 @@ def main():
         #play_plot(axes, mesh_XYZ, positions, personal_best_positions, personal_best_scores, global_best_particle_position, velocities)
 
     Writer = animation.writers['pillow']
-    writer = Writer( metadata=dict(artist='Me'), bitrate=1800)
+    writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
 
-    ani = animation.ArtistAnimation(fig, ims, interval=500, blit=True, repeat_delay=1000)
+    ani = animation.ArtistAnimation(fig, ims)
     ani.save('im.gif', writer=writer)
     plt.show()
     #ani = animation.ArtistAnimation(fig,ims,  blit=True)
